@@ -20,29 +20,30 @@ import javax.swing.JOptionPane;
 public class JFrameSaveUtilisateur extends javax.swing.JFrame {
 
     Controlleur controlleur = new Controlleur();
+
     /**
      * Creates new form JFrameSaveUtilisateur
      */
     public JFrameSaveUtilisateur() {
         initComponents();
-        
+
         RadioButtonFeminin.setSelected(true);
-        
-        for(int i=2023; i>=1900; i--){
-            
-            ComboBoxAnnee.addItem(i+"");
+
+        for (int i = 2023; i >= 1900; i--) {
+
+            ComboBoxAnnee.addItem(i + "");
         }
-        
-        for(int i=1; i<=12; i++){
-            ComboBoxMois.addItem(i+"");
+
+        for (int i = 1; i <= 12; i++) {
+            ComboBoxMois.addItem(i + "");
         }
-        for(int i=1; i<=31; i++){
-            ComboBoxJour.addItem(i+"");
+        for (int i = 1; i <= 31; i++) {
+            ComboBoxJour.addItem(i + "");
         }
-        
+
         try {
-            for(Admin admin : controlleur.routeVersListAllAdmin()){
-                ComboBoxAdmin.addItem(admin.getIdadmin()+" "+admin.getLogin());
+            for (Admin admin : controlleur.routeVersListAllAdmin()) {
+                ComboBoxAdmin.addItem(admin.getIdadmin() + " " + admin.getLogin());
             }
         } catch (SQLException ex) {
             Logger.getLogger(JFrameSaveUtilisateur.class.getName()).log(Level.SEVERE, null, ex);
@@ -79,7 +80,8 @@ public class JFrameSaveUtilisateur extends javax.swing.JFrame {
         ButtonCancel = new javax.swing.JButton();
         ButtonOk = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Nouvel Utilisateur");
 
         jLabel1.setText("Login");
 
@@ -230,25 +232,26 @@ public class JFrameSaveUtilisateur extends javax.swing.JFrame {
             String nom = champNom.getText();
             String pwd = champPassword.getText();
             String prenom = champPrenom.getText();
-            
+
             //Genre avec String
             String genre = RadioButtonFeminin.getText();
-            if(RadioButtonMasculin.isSelected())
+            if (RadioButtonMasculin.isSelected()) {
                 genre = RadioButtonMasculin.getText();
-            
+            }
+
             //Date de Naissance
             int annee = Integer.parseInt(ComboBoxAnnee.getSelectedItem().toString());
             int mois = Integer.parseInt(ComboBoxMois.getSelectedItem().toString());
             int jour = Integer.parseInt(ComboBoxJour.getSelectedItem().toString());
             LocalDate datenaiss = LocalDate.of(annee, mois, jour);
-            
+
             String idAdminString = ComboBoxAdmin.getSelectedItem().toString().split(" ")[0];
             int IdAdmin = Integer.parseInt(idAdminString);
-            
+
             controlleur.routeVersSaveUtilisateur(login, pwd, nom, prenom, datenaiss, genre, IdAdmin);
-            
+
             JOptionPane.showMessageDialog(null, "success");
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(JFrameSaveUtilisateur.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, "Veuillez contacter l'administrateur");

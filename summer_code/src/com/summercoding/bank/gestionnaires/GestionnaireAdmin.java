@@ -14,24 +14,24 @@ import java.util.List;
  * @author TCHAWA Dickens
  */
 public class GestionnaireAdmin {
-    
-     private Admin admin = new Admin();
-     
-     //méthode permettant de faire le login d'un admin
-     public Admin login(String login, String pwd) throws SQLException{
-         
-         return admin.getByLoginAndPassword(login, pwd);
-     
-     }
+
+    private Admin admin = new Admin();
+
+    //méthode permettant de faire le login d'un admin
+    public Admin login(String login, String pwd) throws SQLException {
+
+        return admin.getByLoginAndPassword(login, pwd);
+
+    }
 
     public void saveAdmin(String login, String password, String nom) throws SQLException {
-        
+
         admin.save(login, password, nom);
     }
-    
-    public List<Admin> listAllAdmin() throws SQLException{
-        
+
+    public List<Admin> listAllAdmin() throws SQLException {
+
         return admin.getAllAdmin();
-        
+
     }
 }

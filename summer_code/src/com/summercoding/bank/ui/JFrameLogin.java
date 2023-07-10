@@ -7,6 +7,7 @@ package com.summercoding.bank.ui;
 
 import com.summercoding.bank.controlleur.Controlleur;
 import com.summercoding.bank.entities.Admin;
+import com.summercoding.bank.entities.Utilisateur;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -19,6 +20,8 @@ import javax.swing.JOptionPane;
 public class JFrameLogin extends javax.swing.JFrame {
 
     Controlleur controlleur = new Controlleur();
+    JFrameHome homepage = new JFrameHome();
+
     /**
      * Creates new form JFrameLogin
      */
@@ -42,12 +45,22 @@ public class JFrameLogin extends javax.swing.JFrame {
         champPassword = new javax.swing.JTextField();
         ButtonOK = new javax.swing.JButton();
         ButtonCancel = new javax.swing.JButton();
+        comboBoxChoix = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Login");
+
+        jPanel1.setName(""); // NOI18N
 
         jLabel1.setText("Login");
 
         jLabel2.setText("Password");
+
+        champPassword.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                champPasswordActionPerformed(evt);
+            }
+        });
 
         ButtonOK.setText("OK");
         ButtonOK.addActionListener(new java.awt.event.ActionListener() {
@@ -58,37 +71,50 @@ public class JFrameLogin extends javax.swing.JFrame {
 
         ButtonCancel.setText("Cancel");
 
+        comboBoxChoix.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Admin", "Utilisateur", "" }));
+        comboBoxChoix.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboBoxChoixActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2))
-                .addGap(32, 32, 32)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(78, 78, 78)
                         .addComponent(ButtonCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(ButtonOK, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(champPassword)
-                    .addComponent(champLogin))
-                .addContainerGap())
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel1))
+                        .addGap(32, 32, 32)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(champLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(champPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(comboBoxChoix, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(30, 30, 30)
+                .addGap(22, 22, 22)
+                .addComponent(comboBoxChoix, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(champLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(46, 46, 46)
+                .addGap(35, 35, 35)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(champPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
+                .addGap(44, 44, 44)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ButtonOK)
                     .addComponent(ButtonCancel))
@@ -99,7 +125,7 @@ public class JFrameLogin extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -110,25 +136,64 @@ public class JFrameLogin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void ButtonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonOKActionPerformed
-        try {
-            // TODO add your handling code here:
-            String login = champLogin.getText();
-            String pwd = champPassword.getText();
-            
-            Admin admin = controlleur.routeVersLogin(login, pwd);
-            
-            if(admin == null){
-                JOptionPane.showMessageDialog(null, "Login ou Password incorrect");
-            
-            }else{
-                JOptionPane.showMessageDialog(null, "Success");
+
+        // TODO add your handling code here:
+        String choix = comboBoxChoix.getSelectedItem().toString();
+        String login = champLogin.getText();
+        String pwd = champPassword.getText();
+
+
+        if (login.equals(" ") || pwd.equals(" ")) {
+            JOptionPane.showMessageDialog(this, "Login ou Password empty");
+        } else { // login & password not empty
+
+            if (choix.equals("Admin")) { // Si Admin a été choisi
+                try {
+                    Admin admin = controlleur.routeVersLogin(login, pwd);
+                    if (admin == null) {
+                        JOptionPane.showMessageDialog(null, "Login ou Password incorrect");
+
+                    } else {
+                        //JOptionPane.showMessageDialog(null, "Success");
+                        
+                        this.setVisible(false);
+                        
+                        homepage.setVisible(true);
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(JFrameLogin.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(null, "Please Try Later");
+                }
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(JFrameLogin.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(null, "Veuillez contacter l'administrateur");
+
+            if (choix.equals("Utilisateur")) { // Si Utilisateur a été choisi
+                try {
+                    Utilisateur user = controlleur.routeVersLoginUser(login, pwd);
+                    if (user == null) {
+                        JOptionPane.showMessageDialog(null, "Login ou Password incorrect");
+                        
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Success");
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(JFrameLogin.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(null, "Please Try Later");
+                }
+            }
+
         }
-        
+
+
     }//GEN-LAST:event_ButtonOKActionPerformed
+
+    private void champPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_champPasswordActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_champPasswordActionPerformed
+
+    private void comboBoxChoixActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxChoixActionPerformed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_comboBoxChoixActionPerformed
 
     /**
      * @param args the command line arguments
@@ -170,6 +235,7 @@ public class JFrameLogin extends javax.swing.JFrame {
     private javax.swing.JButton ButtonOK;
     private javax.swing.JTextField champLogin;
     private javax.swing.JTextField champPassword;
+    private javax.swing.JComboBox comboBoxChoix;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;

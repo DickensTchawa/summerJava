@@ -14,19 +14,18 @@ import java.util.List;
  * @author TCHAWA Dickens
  */
 public class GestionnaireCompte {
-    
+
     private Compte compte = new Compte();
-    
-    
-    public void saveCompte(double solde, int idadmin, int iduser){
-    
+
+    public void saveCompte(double solde, int idadmin, int iduser) {
+
         compte.save(solde, idadmin, iduser);
     }
-    
-     public List<Compte> listAllCompte() throws SQLException{
-     
+
+    public List<Compte> listAllCompte() throws SQLException {
+
         return compte.getAllCompte();
-     
-     }
-    
+
+    }
+
 }

@@ -20,34 +20,36 @@ import javax.swing.JOptionPane;
 public class JFrameSaveCompte extends javax.swing.JFrame {
 
     Controlleur controlleur = new Controlleur();
+
     /**
      * Creates new form JFrameCompte
      */
     public JFrameSaveCompte() {
         initComponents();
-        
+
         initOtherComponents();
     }
 
-    
-    private void initOtherComponents(){
+    private void initOtherComponents() {
         try {
-            for (Utilisateur user : controlleur.routeVersListeUtilisateur()){
-                ComboBoxUser.addItem(user.getIduser()+" "+user.getLogin());
-                
+            for (Utilisateur user : controlleur.routeVersListeUtilisateur()) {
+                ComboBoxUser.addItem(user.getIduser() + " " + user.getLogin());
+
             }
         } catch (SQLException ex) {
             Logger.getLogger(JFrameSaveCompte.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         try {
-            for(Admin admin : controlleur.routeVersListAllAdmin()){
-                ComboBoxAdmin.addItem(admin.getIdadmin()+" "+admin.getLogin());
-                
-            }   } catch (SQLException ex) {
+            for (Admin admin : controlleur.routeVersListAllAdmin()) {
+                ComboBoxAdmin.addItem(admin.getIdadmin() + " " + admin.getLogin());
+
+            }
+        } catch (SQLException ex) {
             Logger.getLogger(JFrameSaveCompte.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -67,7 +69,8 @@ public class JFrameSaveCompte extends javax.swing.JFrame {
         ButtonCancel = new javax.swing.JButton();
         ButtonOK = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Nouveau Compte");
 
         jLabel1.setText("Solde");
 
@@ -152,23 +155,23 @@ public class JFrameSaveCompte extends javax.swing.JFrame {
         // TODO add your handling code here:
         String soldeString = champSolde.getText();
         double solde = Float.parseFloat(soldeString);
-        
+
         String idAdminString = ComboBoxAdmin.getSelectedItem().toString().split(" ")[0];
         int IdAdmin = Integer.parseInt(idAdminString);
-        
+
         String idUserString = ComboBoxUser.getSelectedItem().toString().split(" ")[0];
-            int IdUser= Integer.parseInt(idUserString);
-            
+        int IdUser = Integer.parseInt(idUserString);
+
         controlleur.routeVersSaveCompte(solde, IdAdmin, IdUser);
         JOptionPane.showMessageDialog(null, "success");
-        
+
         champSolde.setText("");
         initOtherComponents();
     }//GEN-LAST:event_ButtonOKActionPerformed
 
     private void ComboBoxUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComboBoxUserActionPerformed
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_ComboBoxUserActionPerformed
 
     /**

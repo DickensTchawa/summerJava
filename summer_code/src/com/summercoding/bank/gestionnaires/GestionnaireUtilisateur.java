@@ -15,27 +15,27 @@ import java.util.List;
  * @author TCHAWA Dickens
  */
 public class GestionnaireUtilisateur {
-    
+
     private Utilisateur utilisateur = new Utilisateur();
-     
-     //méthode permettant de faire le login d'un utilisateur
-     public Utilisateur login(String login, String pwd) throws SQLException{
-         
-         return utilisateur.getByLoginAndPassword(login, pwd);
-     
-     }
-     
-     public void saveUtilisateur(String login, String password, String nom,
-             String prenom, LocalDate datenaiss, String genre, int idadmin) throws SQLException{
-         
-         utilisateur.save(login, password, nom, prenom, datenaiss, genre, idadmin);
-         
-     }
-     
-      public List<Utilisateur> listAllUtilisateur() throws SQLException{
-          
-          return utilisateur.getAllUtilisateur();
-      
-      }
-    
+
+    //méthode permettant de faire le login d'un utilisateur
+    public Utilisateur login(String login, String pwd) throws SQLException {
+
+        return utilisateur.getByLoginAndPassword(login, pwd);
+
+    }
+
+    public void saveUtilisateur(String login, String password, String nom,
+            String prenom, LocalDate datenaiss, String genre, int idadmin) throws SQLException {
+
+        utilisateur.save(login, password, nom, prenom, datenaiss, genre, idadmin);
+
+    }
+
+    public List<Utilisateur> listAllUtilisateur() throws SQLException {
+
+        return utilisateur.getAllUtilisateur();
+
+    }
+
 }

@@ -21,24 +21,25 @@ import java.util.logging.Logger;
  * @author TCHAWA Dickens
  */
 public class Utilisateur {
+
     private static Utilisateur User;
-    
+
     int iduser;
-    
+
     String login;
-    
+
     String password;
-    
+
     String nom;
-    
+
     String prenom;
-    
+
     LocalDate datenaiss;
-    
+
     String genre;
-    
+
     int idadmin;
-    
+
     public int getIduser() {
         return iduser;
     }
@@ -102,101 +103,105 @@ public class Utilisateur {
     public void setIdadmin(int idadmin) {
         this.idadmin = idadmin;
     }
-    public void save(String login, String password, String nom, String prenom, LocalDate datenaiss, String genre, int idadmin) throws SQLException{
-            String command="INSERT INTO `utilisateur` ( `login`, `password`, `nom`, `prenom`, `datenaiss`, `genre`, `idadmin`) VALUES (?, ?, ?, ?, ?, ?, ?);";
-            
-            
-            PreparedStatement addstmt =
-                    JDBC.getConnexion().prepareStatement(command);
-            
-            addstmt.setObject(1,login);
-            addstmt.setObject(2,password);
-            addstmt.setObject(3,nom);
-            addstmt.setObject(4,prenom);
-            addstmt.setObject(5,datenaiss);
-            addstmt.setObject(6,genre);
-            addstmt.setObject(7,idadmin);
-            addstmt.execute();
+
+    public void save(String login, String password, String nom, String prenom, LocalDate datenaiss, String genre, int idadmin) throws SQLException {
+        String command = "INSERT INTO `utilisateur` ( `login`, `password`, `nom`, `prenom`, `datenaiss`, `genre`, `idadmin`) VALUES (?, ?, ?, ?, ?, ?, ?);";
+
+        PreparedStatement addstmt
+                = JDBC.getConnexion().prepareStatement(command);
+
+        addstmt.setObject(1, login);
+        addstmt.setObject(2, password);
+        addstmt.setObject(3, nom);
+        addstmt.setObject(4, prenom);
+        addstmt.setObject(5, datenaiss);
+        addstmt.setObject(6, genre);
+        addstmt.setObject(7, idadmin);
+        addstmt.execute();
     }
-         public void update (String login, String password, String nom, String prenom, LocalDate datenaiss, String genre, int idadmin) throws SQLException{
-            String command="UPDATE `utilisateur` SET `login` = ?, `password` = ?, `nom` = ?, `prenom` = ?, `datenaiss` = ?, `genre` = ?, `idadmin` = ? WHERE `utilisateur`.`iduser` = ?;;";
-            
-            
-            PreparedStatement addstmt =
-                    JDBC.getConnexion().prepareStatement(command);
-            
-            addstmt.setObject(1,login);
-            addstmt.setObject(2,password);
-            addstmt.setObject(3,nom);
-            addstmt.setObject(4,prenom);
-            addstmt.setObject(5,datenaiss);
-            addstmt.setObject(6,genre);
-            addstmt.setObject(7,idadmin);
-            addstmt.execute();
-        
-            }
-         public void delete (int iduser) throws SQLException{
-            String command="DELETE FROM `utilisateur` WHERE `utilisateur`.`iduser` = ?;";
-            
-            PreparedStatement addstmt =
-                    JDBC.getConnexion().prepareStatement(command);
-            
-            addstmt.setObject(1,iduser);
-            addstmt.execute();
+
+    public void update(String login, String password, String nom, String prenom, LocalDate datenaiss, String genre, int idadmin) throws SQLException {
+        String command = "UPDATE `utilisateur` SET `login` = ?, `password` = ?, `nom` = ?, `prenom` = ?, `datenaiss` = ?, `genre` = ?, `idadmin` = ? WHERE `utilisateur`.`iduser` = ?;;";
+
+        PreparedStatement addstmt
+                = JDBC.getConnexion().prepareStatement(command);
+
+        addstmt.setObject(1, login);
+        addstmt.setObject(2, password);
+        addstmt.setObject(3, nom);
+        addstmt.setObject(4, prenom);
+        addstmt.setObject(5, datenaiss);
+        addstmt.setObject(6, genre);
+        addstmt.setObject(7, idadmin);
+        addstmt.execute();
+
     }
-         public Utilisateur getOne(int iduser) throws SQLException{
-        
+
+    public void delete(int iduser) throws SQLException {
+        String command = "DELETE FROM `utilisateur` WHERE `utilisateur`.`iduser` = ?;";
+
+        PreparedStatement addstmt
+                = JDBC.getConnexion().prepareStatement(command);
+
+        addstmt.setObject(1, iduser);
+        addstmt.execute();
+    }
+
+    public Utilisateur getOne(int iduser) throws SQLException {
+
         String cmd = "select * from utilisateur where iduser = ?";
-        
-        PreparedStatement stmt 
+
+        PreparedStatement stmt
                 = JDBC.getConnexion().prepareStatement(cmd);
-        
+
         stmt.setObject(1, iduser);
-        
+
         ResultSet rs = stmt.executeQuery();
-        
-        while(rs.next()) {
+
+        while (rs.next()) {
             return new Utilisateur();
         }
-        
+
         return null;
     }
-         public Utilisateur getByLoginAndPassword(String login, String password) throws SQLException{
-        
+
+    public Utilisateur getByLoginAndPassword(String login, String password) throws SQLException {
+
         String cmd = "select * from utilsateur where login = ? and password = ?";
-        
-        PreparedStatement stmt 
+
+        PreparedStatement stmt
                 = JDBC.getConnexion().prepareStatement(cmd);
-        
+
         stmt.setObject(1, login);
         stmt.setObject(2, password);
-        
+
         ResultSet rs = stmt.executeQuery();
-        
-        while(rs.next()) {
-            return new Utilisateur(rs.getInt(1),rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getDate(6).toLocalDate(),rs.getString(7), rs.getInt(8));
+
+        while (rs.next()) {
+            return new Utilisateur(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getDate(6).toLocalDate(), rs.getString(7), rs.getInt(8));
         }
-        
+
         return null;
     }
-         public List<Utilisateur> getAllUtilisateur() throws SQLException{
-        
+
+    public List<Utilisateur> getAllUtilisateur() throws SQLException {
+
         String cmd = "select * from utilisateur";
-        
-        PreparedStatement stmt 
+
+        PreparedStatement stmt
                 = JDBC.getConnexion().prepareStatement(cmd);
-        
+
         ResultSet rs = stmt.executeQuery();
-        
+
         List<Utilisateur> listUtilisateur = new ArrayList<>();
-        while(rs.next()) {
-            listUtilisateur.add(new Utilisateur(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getDate(6).toLocalDate(),rs.getString(7), rs.getInt(8)));
+        while (rs.next()) {
+            listUtilisateur.add(new Utilisateur(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getDate(6).toLocalDate(), rs.getString(7), rs.getInt(8)));
         }
-        
+
         return listUtilisateur;
     }
-         
-    public Utilisateur(){
+
+    public Utilisateur() {
     }
 
     public Utilisateur(int iduser, String login, String password, String nom, String prenom, LocalDate datenaiss, String genre, int idadmin) {
@@ -209,29 +214,24 @@ public class Utilisateur {
         this.genre = genre;
         this.idadmin = idadmin;
     }
-    
-    
 
     @Override
     public String toString() {
         return "Utilisateur{" + "iduser=" + iduser + ", login=" + login + ", password=" + password + ", nom=" + nom + ", prenom=" + prenom + ", datenaiss=" + datenaiss + ", genre=" + genre + ", idadmin=" + idadmin + '}';
     }
-         
 
-    public static void main(String arg[]) throws SQLException{
-         Utilisateur us = new Utilisateur();
-            String result;
+    public static void main(String arg[]) throws SQLException {
+        Utilisateur us = new Utilisateur();
+        String result;
             //result = us.getOne(1).toString();
-            //System.out.println(result);
-            
+        //System.out.println(result);
+
             //result = us.getByLoginAndPassword("root", "root2").toString();
-            //System.out.println(result);
-            
-            result = us.getAllUtilisateur().toString();
-            System.out.println(result);
-            
+        //System.out.println(result);
+        result = us.getAllUtilisateur().toString();
+        System.out.println(result);
+
             //us.update(5, "paul", "paul", "paul");
-            
-            //us.delete(7);
+        //us.delete(7);
     }
 }

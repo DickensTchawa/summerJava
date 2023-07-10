@@ -15,13 +15,14 @@ import javax.swing.JOptionPane;
  *
  * @author TCHAWA Dickens
  */
-public class JFrameAdmin extends javax.swing.JFrame {
+public class JFrameSaveAdmin extends javax.swing.JFrame {
 
-     Controlleur controlleur = new Controlleur();
+    Controlleur controlleur = new Controlleur();
+
     /**
      * Creates new form JFrameAdmin
      */
-    public JFrameAdmin() {
+    public JFrameSaveAdmin() {
         initComponents();
     }
 
@@ -43,7 +44,8 @@ public class JFrameAdmin extends javax.swing.JFrame {
         ButtonOK = new javax.swing.JButton();
         champPassword = new javax.swing.JPasswordField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Nouveau Admin");
 
         jLabel1.setText("Login");
 
@@ -126,24 +128,24 @@ public class JFrameAdmin extends javax.swing.JFrame {
     }//GEN-LAST:event_ButtonCancelActionPerformed
 
     private void ButtonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonOKActionPerformed
-         try {
-             // TODO add your handling code here:
-             String login = champLogin.getText();
-             String pwd = champPassword.getText();
-             String nom = champNom.getText();
-             
-             controlleur.routeVersSaveAdmin(login, pwd, nom);
-             
-             //Fonction de renvoi de message à l'admin
-             JOptionPane.showMessageDialog(null, "Success");
-             
-             //Champs vides après enregistrement
-             champLogin.setText("");
-             champPassword.setText("");
-             champNom.setText("");
-         } catch (SQLException ex) {
-             Logger.getLogger(JFrameAdmin.class.getName()).log(Level.SEVERE, null, ex);
-         }
+        try {
+            // TODO add your handling code here:
+            String login = champLogin.getText();
+            String pwd = champPassword.getText();
+            String nom = champNom.getText();
+
+            controlleur.routeVersSaveAdmin(login, pwd, nom);
+
+            //Fonction de renvoi de message à l'admin
+            JOptionPane.showMessageDialog(null, "Success");
+
+            //Champs vides après enregistrement
+            champLogin.setText("");
+            champPassword.setText("");
+            champNom.setText("");
+        } catch (SQLException ex) {
+            Logger.getLogger(JFrameSaveAdmin.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_ButtonOKActionPerformed
 
     /**
@@ -163,20 +165,21 @@ public class JFrameAdmin extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JFrameAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JFrameSaveAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JFrameAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JFrameSaveAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JFrameAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JFrameSaveAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JFrameAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(JFrameSaveAdmin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new JFrameAdmin().setVisible(true);
+                new JFrameSaveAdmin().setVisible(true);
             }
         });
     }
