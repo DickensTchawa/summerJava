@@ -54,6 +54,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Utilisateur"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenu2ActionPerformed"/>
+          </Events>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="MenuCreerUtilisateur">
               <Properties>
@@ -67,6 +70,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Liste"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="MenuListerUtilisateurActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -87,6 +93,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Liste"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="MenuListerCompteActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>

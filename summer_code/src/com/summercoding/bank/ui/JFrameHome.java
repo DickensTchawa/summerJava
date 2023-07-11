@@ -7,6 +7,8 @@ package com.summercoding.bank.ui;
 
 import com.summercoding.bank.controlleur.Controlleur;
 import com.summercoding.bank.entities.Admin;
+import com.summercoding.bank.entities.Compte;
+import com.summercoding.bank.entities.Utilisateur;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
@@ -111,6 +113,11 @@ public class JFrameHome extends javax.swing.JFrame {
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Utilisateur");
+        jMenu2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenu2ActionPerformed(evt);
+            }
+        });
 
         MenuCreerUtilisateur.setText("Créer");
         MenuCreerUtilisateur.addActionListener(new java.awt.event.ActionListener() {
@@ -121,6 +128,11 @@ public class JFrameHome extends javax.swing.JFrame {
         jMenu2.add(MenuCreerUtilisateur);
 
         MenuListerUtilisateur.setText("Liste");
+        MenuListerUtilisateur.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenuListerUtilisateurActionPerformed(evt);
+            }
+        });
         jMenu2.add(MenuListerUtilisateur);
 
         jMenuBar1.add(jMenu2);
@@ -136,6 +148,11 @@ public class JFrameHome extends javax.swing.JFrame {
         jMenu11.add(MenuCreerCompte);
 
         MenuListerCompte.setText("Liste");
+        MenuListerCompte.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenuListerCompteActionPerformed(evt);
+            }
+        });
         jMenu11.add(MenuListerCompte);
 
         jMenuBar1.add(jMenu11);
@@ -202,6 +219,55 @@ public class JFrameHome extends javax.swing.JFrame {
             Logger.getLogger(JFrameHome.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_MenuListerAdminActionPerformed
+
+    private void jMenu2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenu2ActionPerformed
+
+    private void MenuListerUtilisateurActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuListerUtilisateurActionPerformed
+        try {
+            // TODO add your handling code here:
+            List<Utilisateur> listUser = controlleur.routeVersListeUtilisateur();
+
+            DefaultTableModel model0 = (DefaultTableModel) HomeTable.getModel();
+            model0.addColumn("Id User");
+            model0.addColumn("Login");
+            model0.addColumn("Nom");
+            model0.addColumn("Prenom");
+            model0.addColumn("Datenaiss");
+            model0.addColumn("Genre");
+            model0.addColumn("Id Admin");
+
+            for (Utilisateur ad : listUser) {
+                model0.addRow(new Object[]{ad.getIduser() + "", ad.getLogin() + "", ad.getNom() + "", ad.getPrenom() + "", ad.getDatenaiss() + "", ad.getGenre() + "", ad.getIdadmin()});
+            }
+
+            HomeTable.setModel(model0);
+        } catch (SQLException ex) {
+            Logger.getLogger(JFrameHome.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_MenuListerUtilisateurActionPerformed
+
+    private void MenuListerCompteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuListerCompteActionPerformed
+        try {
+            // TODO add your handling code here:
+            List<Compte> listCompte = controlleur.routeVersListeCompte();
+            
+            DefaultTableModel model1 = (DefaultTableModel) HomeTable.getModel();
+            model1.addColumn("Id");
+            model1.addColumn("Solde");
+            model1.addColumn("Id Admin");
+            model1.addColumn("Id User");
+
+            for (Compte ad : listCompte) {
+                model1.addRow(new Object[]{ad.getIdcompte()+ "", ad.getSolde()+"", ad.getIdadmin()+"", ad.getIduser()});
+            }
+
+            HomeTable.setModel(model1);
+        } catch (SQLException ex) {
+            Logger.getLogger(JFrameHome.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_MenuListerCompteActionPerformed
 
     /**
      * @param args the command line arguments
