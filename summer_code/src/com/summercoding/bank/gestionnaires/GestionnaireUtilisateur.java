@@ -31,11 +31,28 @@ public class GestionnaireUtilisateur {
         utilisateur.save(login, password, nom, prenom, datenaiss, genre, idadmin);
 
     }
+    
+    public void updateUtilisateur(String login, String password, String nom,
+            String prenom, LocalDate datenaiss, String genre, int idadmin) throws SQLException {
+
+        utilisateur.update(login, password, nom, prenom, datenaiss, genre, idadmin);
+    }
+    
+    
+    public void deleteUtilisateur(int iduser) throws SQLException{
+    
+        utilisateur.delete(iduser);
+    }
 
     public List<Utilisateur> listAllUtilisateur() throws SQLException {
 
         return utilisateur.getAllUtilisateur();
 
+    }
+    
+    public Utilisateur getUtilisateurDetails(int iduser) throws SQLException {
+    
+        return utilisateur.getOne(iduser);
     }
 
 }

@@ -6,10 +6,13 @@
 package com.summercoding.bank.ui;
 
 import com.summercoding.bank.controlleur.Controlleur;
+import com.summercoding.bank.entities.Admin;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -19,11 +22,49 @@ public class JFrameSaveAdmin extends javax.swing.JFrame {
 
     Controlleur controlleur = new Controlleur();
 
+    String quelAction;
+
+    JFrameHome homepage;
+
     /**
      * Creates new form JFrameAdmin
+     *
+     * @param action
+     * @param idadmin
+     * @param hp
      */
-    public JFrameSaveAdmin() {
+    public JFrameSaveAdmin(String action, int idadmin, JFrameHome hp) throws SQLException {
         initComponents();
+
+        homepage = hp;
+        quelAction = action;
+
+        if (quelAction.equals("add")) {
+            ButtonUpdate.setVisible(false);
+            ButtonDelete.setVisible(false);
+            LabelIdAdmin.setVisible(false);
+            ChampIdAdmin.setVisible(false);
+        }
+        else if(quelAction.equalsIgnoreCase("update")){
+            
+            Admin admin = controlleur.routeVersAdminDetails(idadmin);
+            
+            champLogin.setText(admin.getLogin());
+            champNom.setText(admin.getNom());
+            champPassword.setText(admin.getPassword());
+            ChampIdAdmin.setText(admin.getIdadmin()+"");
+        
+        }
+        else if(quelAction.equalsIgnoreCase("delete")){
+            
+            Admin admin = controlleur.routeVersDeleteAdmin(idadmin);
+            
+            champLogin.setText(admin.getLogin());
+            champNom.setText(admin.getNom());
+            champPassword.setText(admin.getPassword());
+            ChampIdAdmin.setText(admin.getIdadmin()+"");
+        
+        }
     }
 
     /**
@@ -41,8 +82,12 @@ public class JFrameSaveAdmin extends javax.swing.JFrame {
         champLogin = new javax.swing.JTextField();
         champNom = new javax.swing.JTextField();
         ButtonCancel = new javax.swing.JButton();
-        ButtonOK = new javax.swing.JButton();
+        ButtonAdd = new javax.swing.JButton();
         champPassword = new javax.swing.JPasswordField();
+        LabelIdAdmin = new javax.swing.JLabel();
+        ChampIdAdmin = new javax.swing.JTextField();
+        ButtonDelete = new javax.swing.JButton();
+        ButtonUpdate = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Nouveau Admin");
@@ -66,10 +111,28 @@ public class JFrameSaveAdmin extends javax.swing.JFrame {
             }
         });
 
-        ButtonOK.setText("OK");
-        ButtonOK.addActionListener(new java.awt.event.ActionListener() {
+        ButtonAdd.setText("Add");
+        ButtonAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ButtonOKActionPerformed(evt);
+                ButtonAddActionPerformed(evt);
+            }
+        });
+
+        LabelIdAdmin.setText("Id Admin");
+
+        ChampIdAdmin.setEditable(false);
+
+        ButtonDelete.setText("Delete");
+        ButtonDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ButtonDeleteActionPerformed(evt);
+            }
+        });
+
+        ButtonUpdate.setText("Update");
+        ButtonUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ButtonUpdateActionPerformed(evt);
             }
         });
 
@@ -80,19 +143,28 @@ public class JFrameSaveAdmin extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3))
-                .addGap(38, 38, 38)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(ButtonCancel, javax.swing.GroupLayout.DEFAULT_SIZE, 74, Short.MAX_VALUE)
-                        .addGap(37, 37, 37)
-                        .addComponent(ButtonOK, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(champNom)
-                    .addComponent(champLogin)
-                    .addComponent(champPassword))
-                .addContainerGap(29, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(11, 11, 11)
+                        .addComponent(ButtonCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(31, 31, 31)
+                        .addComponent(ButtonDelete)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
+                        .addComponent(ButtonUpdate)
+                        .addGap(34, 34, 34)
+                        .addComponent(ButtonAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3)
+                            .addComponent(LabelIdAdmin))
+                        .addGap(38, 38, 38)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(champNom)
+                            .addComponent(champPassword)
+                            .addComponent(champLogin)
+                            .addComponent(ChampIdAdmin))))
+                .addGap(26, 26, 26))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -101,18 +173,24 @@ public class JFrameSaveAdmin extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(champLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(72, 72, 72)
+                .addGap(65, 65, 65)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(champPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(62, 62, 62)
+                    .addComponent(champPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addGap(61, 61, 61)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(champNom, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                    .addComponent(champNom, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(LabelIdAdmin)
+                    .addComponent(ChampIdAdmin, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(59, 59, 59)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ButtonCancel)
-                    .addComponent(ButtonOK))
+                    .addComponent(ButtonAdd)
+                    .addComponent(ButtonDelete)
+                    .addComponent(ButtonUpdate))
                 .addGap(24, 24, 24))
         );
 
@@ -127,26 +205,69 @@ public class JFrameSaveAdmin extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_ButtonCancelActionPerformed
 
-    private void ButtonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonOKActionPerformed
+    private void ButtonAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonAddActionPerformed
         try {
             // TODO add your handling code here:
             String login = champLogin.getText();
             String pwd = champPassword.getText();
             String nom = champNom.getText();
-
+            
+            
             controlleur.routeVersSaveAdmin(login, pwd, nom);
 
+            //refresh datatable
+            refreshTable();
+            
+            this.setVisible(false);
             //Fonction de renvoi de message à l'admin
             JOptionPane.showMessageDialog(null, "Success");
 
             //Champs vides après enregistrement
-            champLogin.setText("");
-            champPassword.setText("");
-            champNom.setText("");
+            this.dispose();
         } catch (SQLException ex) {
             Logger.getLogger(JFrameSaveAdmin.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_ButtonOKActionPerformed
+    }//GEN-LAST:event_ButtonAddActionPerformed
+
+    private void ButtonUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonUpdateActionPerformed
+        try {
+            // TODO add your handling code here:
+            String id = ChampIdAdmin.getText();
+            int idadmin = Integer.parseInt(id);
+            String login = champLogin.getText();
+            String pwd = champPassword.getText();
+            String nom = champNom.getText();
+            
+            controlleur.routeVersUpdateAdmin(idadmin, login, pwd, nom);
+            
+            this.dispose();
+            
+            // Mettre à jour le Table
+            refreshTable();
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(JFrameSaveAdmin.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Internal Error, please contact admin");
+        }
+    }//GEN-LAST:event_ButtonUpdateActionPerformed
+
+    private void ButtonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonDeleteActionPerformed
+        try {
+            // TODO add your handling code here:
+            // TODO add your handling code here:
+            String id = ChampIdAdmin.getText();
+            int idadmin = Integer.parseInt(id);
+            
+            controlleur.routeVersDeleteAdmin(idadmin);
+            
+            this.dispose();
+            
+            // Mettre à jour le Table
+            refreshTable();
+        } catch (SQLException ex) {
+            Logger.getLogger(JFrameSaveAdmin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_ButtonDeleteActionPerformed
 
     /**
      * @param args the command line arguments
@@ -179,14 +300,36 @@ public class JFrameSaveAdmin extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new JFrameSaveAdmin().setVisible(true);
+                try {
+                    new JFrameSaveAdmin("add", 0, null).setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(JFrameSaveAdmin.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
 
+    private void refreshTable() throws SQLException{
+        List<Admin> listAdmin = controlleur.routeVersListAllAdmin();
+
+            DefaultTableModel model = new DefaultTableModel();
+            model.addColumn("Id Admin");
+            model.addColumn("Nom");
+            model.addColumn("Login");
+
+            for (Admin ad : listAdmin) {
+                model.addRow(new String[]{ad.getIdadmin() + "", ad.getNom() + "", ad.getLogin()});
+            }
+
+            homepage.getHomeTable().setModel(model);
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton ButtonAdd;
     private javax.swing.JButton ButtonCancel;
-    private javax.swing.JButton ButtonOK;
+    private javax.swing.JButton ButtonDelete;
+    private javax.swing.JButton ButtonUpdate;
+    private javax.swing.JTextField ChampIdAdmin;
+    private javax.swing.JLabel LabelIdAdmin;
     private javax.swing.JTextField champLogin;
     private javax.swing.JTextField champNom;
     private javax.swing.JPasswordField champPassword;

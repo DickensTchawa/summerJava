@@ -7,6 +7,7 @@ package com.summercoding.bank.ui;
 
 import com.summercoding.bank.controlleur.Controlleur;
 import com.summercoding.bank.entities.Admin;
+import com.summercoding.bank.entities.Compte;
 import com.summercoding.bank.entities.Utilisateur;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -23,11 +24,47 @@ public class JFrameSaveCompte extends javax.swing.JFrame {
 
     /**
      * Creates new form JFrameCompte
+     * @param action
+     * @param idcompte
+     * @param hp
+     * @throws java.sql.SQLException
      */
-    public JFrameSaveCompte() {
+    public JFrameSaveCompte(String action, int idcompte, JFrameHome hp) throws SQLException {
         initComponents();
 
         initOtherComponents();
+        
+        JFrameHome homepage = hp;
+        String quelAction = action;
+
+        if (quelAction.equals("add")) {
+            ButtonUpdate.setVisible(false);
+            ButtonDelete.setVisible(false);
+        }
+        
+        else if(quelAction.equalsIgnoreCase("update")){
+            
+           Compte compte = controlleur.routeVersCompteDetails(idcompte);
+            
+            
+            champSolde.setText(compte.getSolde()+"");
+            ComboBoxAdmin.setSelectedItem(compte.getIdadmin());
+            ComboBoxUser.setSelectedItem(compte.getIduser());
+        
+        }
+        else if(quelAction.equalsIgnoreCase("delete")){
+            
+            Compte compte = controlleur.routeVersCompteDetails(idcompte);
+            
+            champSolde.setText(compte.getSolde()+"");
+            ComboBoxAdmin.setSelectedItem(compte.getIdadmin());
+            ComboBoxUser.setSelectedItem(compte.getIduser());
+            
+        }
+    }
+
+    JFrameSaveCompte() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     private void initOtherComponents() {
@@ -67,7 +104,9 @@ public class JFrameSaveCompte extends javax.swing.JFrame {
         ComboBoxAdmin = new javax.swing.JComboBox();
         ComboBoxUser = new javax.swing.JComboBox();
         ButtonCancel = new javax.swing.JButton();
-        ButtonOK = new javax.swing.JButton();
+        ButtonAdd = new javax.swing.JButton();
+        ButtonDelete = new javax.swing.JButton();
+        ButtonUpdate = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Nouveau Compte");
@@ -86,10 +125,19 @@ public class JFrameSaveCompte extends javax.swing.JFrame {
 
         ButtonCancel.setText("Cancel");
 
-        ButtonOK.setText("OK");
-        ButtonOK.addActionListener(new java.awt.event.ActionListener() {
+        ButtonAdd.setText("Add");
+        ButtonAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ButtonOKActionPerformed(evt);
+                ButtonAddActionPerformed(evt);
+            }
+        });
+
+        ButtonDelete.setText("Delete");
+
+        ButtonUpdate.setText("Update");
+        ButtonUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ButtonUpdateActionPerformed(evt);
             }
         });
 
@@ -102,17 +150,21 @@ public class JFrameSaveCompte extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2)
-                    .addComponent(jLabel3))
-                .addGap(47, 47, 47)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel3)
+                    .addComponent(ButtonCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(10, 10, 10)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(ButtonCancel, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 66, Short.MAX_VALUE)
-                        .addComponent(ButtonOK, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(30, 30, 30)
+                        .addComponent(ButtonDelete)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 57, Short.MAX_VALUE)
+                        .addComponent(ButtonUpdate)
+                        .addGap(43, 43, 43)
+                        .addComponent(ButtonAdd, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(champSolde)
                     .addComponent(ComboBoxAdmin, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(ComboBoxUser, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(52, Short.MAX_VALUE))
+                .addGap(35, 35, 35))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -132,7 +184,9 @@ public class JFrameSaveCompte extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ButtonCancel)
-                    .addComponent(ButtonOK)))
+                    .addComponent(ButtonAdd)
+                    .addComponent(ButtonDelete)
+                    .addComponent(ButtonUpdate)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -151,7 +205,7 @@ public class JFrameSaveCompte extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void ButtonOKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonOKActionPerformed
+    private void ButtonAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonAddActionPerformed
         // TODO add your handling code here:
         String soldeString = champSolde.getText();
         double solde = Float.parseFloat(soldeString);
@@ -167,12 +221,16 @@ public class JFrameSaveCompte extends javax.swing.JFrame {
 
         champSolde.setText("");
         initOtherComponents();
-    }//GEN-LAST:event_ButtonOKActionPerformed
+    }//GEN-LAST:event_ButtonAddActionPerformed
 
     private void ComboBoxUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ComboBoxUserActionPerformed
         // TODO add your handling code here:
 
     }//GEN-LAST:event_ComboBoxUserActionPerformed
+
+    private void ButtonUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ButtonUpdateActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ButtonUpdateActionPerformed
 
     /**
      * @param args the command line arguments
@@ -211,8 +269,10 @@ public class JFrameSaveCompte extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton ButtonAdd;
     private javax.swing.JButton ButtonCancel;
-    private javax.swing.JButton ButtonOK;
+    private javax.swing.JButton ButtonDelete;
+    private javax.swing.JButton ButtonUpdate;
     private javax.swing.JComboBox ComboBoxAdmin;
     private javax.swing.JComboBox ComboBoxUser;
     private javax.swing.JTextField champSolde;

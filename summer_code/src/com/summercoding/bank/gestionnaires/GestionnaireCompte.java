@@ -7,6 +7,7 @@ package com.summercoding.bank.gestionnaires;
 
 import com.summercoding.bank.entities.Compte;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -21,11 +22,27 @@ public class GestionnaireCompte {
 
         compte.save(solde, idadmin, iduser);
     }
+    
+    public void updateCompte(double solde, int idadmin, int iduser) throws SQLException {
+
+        compte.update(solde, idadmin, iduser);
+    }
+    
+    
+    public void deleteCompte(int idcompte) throws SQLException{
+    
+        compte.delete(idcompte);
+    }
 
     public List<Compte> listAllCompte() throws SQLException {
 
         return compte.getAllCompte();
 
+    }
+    
+    public Compte getCompteDetails(int idcompte) throws SQLException {
+    
+        return compte.getOne(idcompte);
     }
 
 }

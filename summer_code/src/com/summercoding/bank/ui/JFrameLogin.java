@@ -142,7 +142,6 @@ public class JFrameLogin extends javax.swing.JFrame {
         String login = champLogin.getText();
         String pwd = champPassword.getText();
 
-
         if (login.equals(" ") || pwd.equals(" ")) {
             JOptionPane.showMessageDialog(this, "Login ou Password empty");
         } else { // login & password not empty
@@ -155,9 +154,9 @@ public class JFrameLogin extends javax.swing.JFrame {
 
                     } else {
                         //JOptionPane.showMessageDialog(null, "Success");
-                        
+
                         this.setVisible(false);
-                        
+
                         homepage.setVisible(true);
                     }
                 } catch (SQLException ex) {
@@ -171,7 +170,7 @@ public class JFrameLogin extends javax.swing.JFrame {
                     Utilisateur user = controlleur.routeVersLoginUser(login, pwd);
                     if (user == null) {
                         JOptionPane.showMessageDialog(null, "Login ou Password incorrect");
-                        
+
                     } else {
                         JOptionPane.showMessageDialog(null, "Success");
                     }

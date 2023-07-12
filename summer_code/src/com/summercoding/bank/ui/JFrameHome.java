@@ -13,7 +13,9 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -22,9 +24,8 @@ import javax.swing.table.DefaultTableModel;
 public class JFrameHome extends javax.swing.JFrame {
 
     Controlleur controlleur = new Controlleur();
-    JFrameSaveAdmin saveadmin = new JFrameSaveAdmin();
-    JFrameSaveUtilisateur saveuser = new JFrameSaveUtilisateur();
-    JFrameSaveCompte savecompte = new JFrameSaveCompte();
+    String quelMenu;
+
 
     /**
      * Creates new form JFrameHome
@@ -59,6 +60,8 @@ public class JFrameHome extends javax.swing.JFrame {
         jMenu11 = new javax.swing.JMenu();
         MenuCreerCompte = new javax.swing.JMenuItem();
         MenuListerCompte = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        jMenu4 = new javax.swing.JMenu();
 
         jMenuItem1.setText("jMenuItem1");
 
@@ -79,6 +82,11 @@ public class JFrameHome extends javax.swing.JFrame {
 
             }
         ));
+        HomeTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                HomeTableMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(HomeTable);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -157,6 +165,12 @@ public class JFrameHome extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu11);
 
+        jMenu3.setText("A propos");
+        jMenuBar1.add(jMenu3);
+
+        jMenu4.setText("Aide");
+        jMenuBar1.add(jMenu4);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -174,23 +188,36 @@ public class JFrameHome extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void MenuCreerAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuCreerAdminActionPerformed
-        // TODO add your handling code here:
-        saveadmin.setVisible(true);
+        try {
+            // TODO add your handling code here:
+            new JFrameSaveAdmin("add", 0, this).setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(JFrameHome.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_MenuCreerAdminActionPerformed
 
     private void MenuCreerUtilisateurActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuCreerUtilisateurActionPerformed
-        // TODO add your handling code here:
-        saveuser.setVisible(true);
+        try {
+            // TODO add your handling code here:
+            new JFrameSaveUtilisateur("add",0,this).setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(JFrameHome.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_MenuCreerUtilisateurActionPerformed
 
     private void MenuCreerCompteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuCreerCompteActionPerformed
-        // TODO add your handling code here:
-        savecompte.setVisible(true);
+        try {
+            // TODO add your handling code here:
+            new JFrameSaveCompte("add", 0, this).setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(JFrameHome.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_MenuCreerCompteActionPerformed
 
     private void MenuListerAdminActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuListerAdminActionPerformed
         try {
             // TODO add your handling code here:
+            quelMenu = "admin";
             /* String[] columns = new String [] {
              "Id","Nom","Login"
              };
@@ -206,7 +233,7 @@ public class JFrameHome extends javax.swing.JFrame {
             List<Admin> listAdmin = controlleur.routeVersListAllAdmin();
 
             DefaultTableModel model = (DefaultTableModel) HomeTable.getModel();
-            model.addColumn("id");
+            model.addColumn("Id Admin");
             model.addColumn("Nom");
             model.addColumn("Login");
 
@@ -252,15 +279,16 @@ public class JFrameHome extends javax.swing.JFrame {
         try {
             // TODO add your handling code here:
             List<Compte> listCompte = controlleur.routeVersListeCompte();
-            
+
             DefaultTableModel model1 = (DefaultTableModel) HomeTable.getModel();
             model1.addColumn("Id");
             model1.addColumn("Solde");
             model1.addColumn("Id Admin");
             model1.addColumn("Id User");
 
+            // Liste des Comptes existants dans la Base de données
             for (Compte ad : listCompte) {
-                model1.addRow(new Object[]{ad.getIdcompte()+ "", ad.getSolde()+"", ad.getIdadmin()+"", ad.getIduser()});
+                model1.addRow(new Object[]{ad.getIdcompte() + "", ad.getSolde() + "", ad.getIdadmin() + "", ad.getIduser()});
             }
 
             HomeTable.setModel(model1);
@@ -268,6 +296,51 @@ public class JFrameHome extends javax.swing.JFrame {
             Logger.getLogger(JFrameHome.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_MenuListerCompteActionPerformed
+
+    private void HomeTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_HomeTableMouseClicked
+        // TODO add your handling code here:
+        int numeroLigne = HomeTable.getSelectedRow(); // Récupère le numéro de la ligne sélectionné dans la liste des admins
+        TableModel model = HomeTable.getModel();
+
+        if (quelMenu.equals("admin")) {
+            try {
+                String Id = model.getValueAt(numeroLigne, 0).toString(); //Lecture de la ligne en question
+                int idadmin = Integer.parseInt(Id);
+                
+                JFrameSaveAdmin jFrameAdmin
+                        = new JFrameSaveAdmin("update", idadmin, this);
+                jFrameAdmin.setVisible(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(JFrameHome.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+            if (quelMenu.equals("utilisateur")) {
+            try {
+                String Id = model.getValueAt(numeroLigne, 0).toString(); //Lecture de la ligne en question
+                int iduser = Integer.parseInt(Id);
+                
+                JFrameSaveUtilisateur jFrameUser
+                        = new JFrameSaveUtilisateur("update", iduser, this);
+                jFrameUser.setVisible(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(JFrameHome.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+            if (quelMenu.equals("compte")) {
+            try {
+                String Id = model.getValueAt(numeroLigne, 0).toString(); //Lecture de la ligne en question
+                int idcompte = Integer.parseInt(Id);
+                
+                JFrameSaveCompte jFrameCompte
+                        = new JFrameSaveCompte("update", idcompte, this);
+                jFrameCompte.setVisible(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(JFrameHome.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+    }//GEN-LAST:event_HomeTableMouseClicked
 
     /**
      * @param args the command line arguments
@@ -304,6 +377,15 @@ public class JFrameHome extends javax.swing.JFrame {
         });
     }
 
+    public JTable getHomeTable() {
+        return HomeTable;
+    }
+
+    public void setHomeTable(JTable HomeTable) {
+        this.HomeTable = HomeTable;
+    }
+    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable HomeTable;
     private javax.swing.JMenuItem MenuCreerAdmin;
@@ -316,6 +398,8 @@ public class JFrameHome extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu10;
     private javax.swing.JMenu jMenu11;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu9;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuBar jMenuBar2;
